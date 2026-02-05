@@ -44,5 +44,21 @@ final class MyPackagesViewModel: ObservableObject {
             StorageManager.shared.save(packages)
         }
     }
+    func useMeal(at index: Int, scannedCode: String) {
+        guard packages.indices.contains(index) else { return }
+
+        let package = packages[index]
+
+        guard package.isActivated,
+              package.mealsLeft > 0,
+              scannedCode == package.offer.qrCodeValue,
+              let activationDate = package.activationDate,
+              Date() <= Calendar.current.date(byAdding: .day, value: 30, to: activationDate)!
+        else { return }
+
+        packages[index].mealsLeft -= 1
+        StorageManager.shared.save(packages)
+    }
+
 
 }

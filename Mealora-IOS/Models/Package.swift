@@ -15,4 +15,5 @@ struct Package: Identifiable, Codable {
     var isActivated: Bool
     var activationDate: Date?
     var mealsLeft: Int
+    
 }
