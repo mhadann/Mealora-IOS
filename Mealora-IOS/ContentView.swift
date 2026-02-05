@@ -8,16 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var packagesVM = MyPackagesViewModel()
+    private let offersVM = OffersViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            OffersListView(
+                offers: offersVM.offers,
+                packagesVM: packagesVM
+            )
+            .tabItem {
+                Label("Hem", systemImage: "house")
+            }
+
+            MyPackagesView()
+                .environmentObject(packagesVM)
+                .tabItem {
+                    Label("Mina paket", systemImage: "ticket")
+                }
         }
-        .padding()
     }
 }
+
 
 #Preview {
     ContentView()
