@@ -6,3 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct PackageCardView: View {
+    let package: Package
+    let onActivate: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(package.offer.restaurantName)
+                .font(.headline)
+
+            Text("Måltider kvar: \(package.mealsLeft)")
+
+            Text(package.isActivated ? "Aktiverat" : "Ej aktiverat")
+                .foregroundColor(package.isActivated ? .green : .red)
+
+            if !package.isActivated {
+                Button("Aktivera paket") {
+                    onActivate()
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(.vertical, 8)
+    }
+}
