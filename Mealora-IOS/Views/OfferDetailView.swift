@@ -44,3 +44,7 @@ struct OfferDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+#Preview {
+    ContentView()
+}
