@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import AudioToolbox
+
 
 struct PackageCardView: View {
     let package: Package
@@ -20,6 +22,9 @@ struct PackageCardView: View {
         case activate
         case useMeal
     }
+
+    @State private var showSuccessView = false
+    @State private var successText = ""
 
 
     var body: some View {
@@ -57,6 +62,15 @@ struct PackageCardView: View {
                     handleScan(scannedCode)
                 })
             }
+            .fullScreenCover(isPresented: $showSuccessView) {
+                PaymentSuccessView(
+                    text: successText,
+                    onDone: {
+                        showSuccessView = false
+                    }
+                )
+            }
+
             .buttonStyle(.bordered)
         }
     }
@@ -71,16 +85,22 @@ struct PackageCardView: View {
                 at: index,
                 scannedCode: scannedCode
             )
+            successText = "Paketet är aktiverat 🎉"
 
         case .useMeal:
             packagesVM.useMeal(
                 at: index,
                 scannedCode: scannedCode
             )
+            successText = "En måltid har använts 🍽️"
+            //ljudet som spelas upp vid godkänt
+            AudioServicesPlaySystemSound(1060)
         }
 
         showQRScanner = false
         qrAction = nil
+        showSuccessView = true
     }
+
 
 }
