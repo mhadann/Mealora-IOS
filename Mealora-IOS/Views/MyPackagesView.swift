@@ -4,47 +4,31 @@
 //
 //  Created by Mahamed Adan on 2026-01-29.
 //
-
 import SwiftUI
-
-// View som visar paket listan
 
 struct MyPackagesView: View {
     @EnvironmentObject var packagesVM: MyPackagesViewModel
-    @State private var showAlert = false
-    @State private var selectedIndex: Int?
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(packagesVM.packages.indices, id: \.self) { index in
+                ForEach(
+                    Array(packagesVM.packages.enumerated()),
+                    id: \.element.id
+                ) { index, package in
                     PackageCardView(
-                        package: packagesVM.packages[index],
-                        onActivate: {
-                            selectedIndex = index
-                            showAlert = true
-                        },
-                        onUseMeal: {
-                            packagesVM.useMeal(
-                                at: index,
-                                scannedCode: "bella-italia-qr" // mock QR
-                            )
-                        }
+                        package: package,
+                        index: index,
+                        packagesVM: packagesVM
                     )
                 }
             }
             .navigationTitle("Mina paket")
-            .alert("Har du betalat paketet?", isPresented: $showAlert) {
-                Button("Nej", role: .cancel) {}
-                Button("Ja") {
-                    activateMockQR()
-                }
-            }
         }
     }
+}
 
-    func activateMockQR() {
-        guard let index = selectedIndex else { return }
-        packagesVM.activatePackage(at: index, scannedCode: "bella-italia-qr")
-    }
+#Preview {
+    MyPackagesView()
+        .environmentObject(MyPackagesViewModel())
 }

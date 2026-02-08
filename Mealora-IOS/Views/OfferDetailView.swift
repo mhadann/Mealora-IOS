@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// View för detaljer om erbjudandet 
+// View för detaljer om erbjudandet
 
 struct OfferDetailView: View {
     let offer: Offer
@@ -43,4 +43,8 @@ struct OfferDetailView: View {
         .navigationTitle("Detaljer")
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+#Preview {
+    ContentView()
 }

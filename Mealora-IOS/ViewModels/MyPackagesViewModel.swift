@@ -31,6 +31,7 @@ final class MyPackagesViewModel: ObservableObject {
         StorageManager.shared.save(packages)
     }
     
+    
     // funktion för att aktivera paket
     
     func activatePackage(at index: Int, scannedCode: String) {
@@ -44,21 +45,23 @@ final class MyPackagesViewModel: ObservableObject {
             StorageManager.shared.save(packages)
         }
     }
+    
     func useMeal(at index: Int, scannedCode: String) {
         guard packages.indices.contains(index) else { return }
 
         let package = packages[index]
 
-        guard package.isActivated,
-              package.mealsLeft > 0,
-              scannedCode == package.offer.qrCodeValue,
-              let activationDate = package.activationDate,
-              Date() <= Calendar.current.date(byAdding: .day, value: 30, to: activationDate)!
-        else { return }
+        guard package.isActivated else { return }
+        guard package.mealsLeft > 0 else { return }
+
+        let expectedQR = package.offer.qrCodeValue
+        guard scannedCode == expectedQR else { return }
 
         packages[index].mealsLeft -= 1
         StorageManager.shared.save(packages)
     }
+
+    
 
 
 }
