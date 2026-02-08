@@ -19,11 +19,18 @@ struct MyPackagesView: View {
             List {
                 ForEach(packagesVM.packages.indices, id: \.self) { index in
                     PackageCardView(
-                        package: packagesVM.packages[index]
-                    ) {
-                        selectedIndex = index
-                        showAlert = true
-                    }
+                        package: packagesVM.packages[index],
+                        onActivate: {
+                            selectedIndex = index
+                            showAlert = true
+                        },
+                        onUseMeal: {
+                            packagesVM.useMeal(
+                                at: index,
+                                scannedCode: "bella-italia-qr" // mock QR
+                            )
+                        }
+                    )
                 }
             }
             .navigationTitle("Mina paket")

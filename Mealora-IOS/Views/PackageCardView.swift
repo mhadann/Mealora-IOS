@@ -11,6 +11,7 @@ import SwiftUI
 struct PackageCardView: View {
     let package: Package
     let onActivate: () -> Void
+    let onUseMeal: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -30,5 +31,14 @@ struct PackageCardView: View {
             }
         }
         .padding(.vertical, 8)
+        
+        if package.isActivated && package.mealsLeft > 0 {
+            Button("Använd 1 måltid") {
+                onUseMeal()
+            }
+            .buttonStyle(.bordered)
+        }
     }
+   
+
 }
