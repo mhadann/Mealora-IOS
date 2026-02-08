@@ -30,4 +30,43 @@ final class MyPackagesViewModel: ObservableObject {
         packages.append(newPackage)
         StorageManager.shared.save(packages)
     }
+    
+    
+    // funktion för att aktivera paket
+    
+    func activatePackage(at index: Int, scannedCode: String) {
+        guard packages.indices.contains(index) else { return }
+
+        //  om redan aktiverat
+        guard packages[index].isActivated == false else { return }
+
+        let expectedQR = packages[index].offer.qrCode
+
+        guard scannedCode == expectedQR else { return }
+
+        packages[index].isActivated = true
+        packages[index].activationDate = Date()
+        StorageManager.shared.save(packages)
+    }
+    
+    func useMeal(at index: Int, scannedCode: String) -> Bool {
+        guard packages.indices.contains(index) else { return false }
+
+        let package = packages[index]
+
+        guard package.isActivated else { return false }
+        guard package.mealsLeft > 0 else { return false }
+
+        let expectedQR = package.offer.qrCode
+        guard scannedCode == expectedQR else { return false }
+
+        packages[index].mealsLeft -= 1
+        StorageManager.shared.save(packages)
+        return true
+    }
+
+
+    
+
+
 }

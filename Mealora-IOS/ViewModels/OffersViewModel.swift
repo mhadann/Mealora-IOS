@@ -19,7 +19,7 @@ final class OffersViewModel {
             meals: 10,
             price: 750,
             durationDays: 30,
-            qrCodeValue: "bella-italia-qr"
+            qrCode: "bella-italia-qr"
         ),
         Offer(
             id: UUID(),
@@ -28,7 +28,7 @@ final class OffersViewModel {
             meals: 10,
             price: 750,
             durationDays: 30,
-            qrCodeValue: "bella-italia-qr"
+            qrCode: "Test-restaurang-qr"
         )
     ]
     

@@ -15,5 +15,5 @@ struct Offer: Identifiable, Codable {
     let meals: Int
     let price: Int
     let durationDays: Int
-    let qrCodeValue: String
+    let qrCode: String
 }
