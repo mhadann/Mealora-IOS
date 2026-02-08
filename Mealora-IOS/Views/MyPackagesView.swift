@@ -11,32 +11,33 @@ import SwiftUI
 
 struct MyPackagesView: View {
     @EnvironmentObject var packagesVM: MyPackagesViewModel
+    @State private var showAlert = false
+    @State private var selectedIndex: Int?
 
     var body: some View {
         NavigationStack {
             List {
-                if packagesVM.packages.isEmpty {
-                    Text("Inga paket ännu")
-                } else {
-                    ForEach(packagesVM.packages) { package in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(package.offer.restaurantName)
-                                .font(.headline)
-
-                            Text("Måltider kvar: \(package.mealsLeft)")
-
-                            Text(package.isActivated ? "Aktiverat" : "Ej aktiverat")
-                                .foregroundColor(package.isActivated ? .green : .red)
-                        }
-                        .padding(.vertical, 8)
+                ForEach(packagesVM.packages.indices, id: \.self) { index in
+                    PackageCardView(
+                        package: packagesVM.packages[index]
+                    ) {
+                        selectedIndex = index
+                        showAlert = true
                     }
                 }
             }
             .navigationTitle("Mina paket")
+            .alert("Har du betalat paketet?", isPresented: $showAlert) {
+                Button("Nej", role: .cancel) {}
+                Button("Ja") {
+                    activateMockQR()
+                }
+            }
         }
     }
+
+    func activateMockQR() {
+        guard let index = selectedIndex else { return }
+        packagesVM.activatePackage(at: index, scannedCode: "bella-italia-qr")
+    }
 }
-
-
-
-
