@@ -16,4 +16,9 @@ struct Offer: Identifiable, Codable {
     let price: Int
     let durationDays: Int
     let qrCode: String
+    let discountText: String
+    let subtitle: String
+    let imageName: String
+    let Logimage: String
 }
+

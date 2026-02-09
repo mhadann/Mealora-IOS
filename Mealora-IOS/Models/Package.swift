@@ -16,4 +16,16 @@ struct Package: Identifiable, Codable {
     var activationDate: Date?
     var mealsLeft: Int
     
+    var daysLeft: Int? {
+        guard let activationDate else { return nil }
+
+        let calendar = Calendar.current
+        let endDate = calendar.date(byAdding: .day, value: 30, to: activationDate)!
+
+        let days = calendar.dateComponents([.day], from: Date(), to: endDate).day
+        return max(days ?? 0, 0)
+    }
+    
 }
+
+

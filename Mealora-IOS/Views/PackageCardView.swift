@@ -36,6 +36,13 @@ struct PackageCardView: View {
 
             Text(package.isActivated ? "Aktiverat" : "Ej aktiverat")
                 .foregroundColor(package.isActivated ? .green : .red)
+            
+            if package.isActivated, let daysLeft = package.daysLeft {
+                Text("\(daysLeft) dagar kvar")
+                    .font(.subheadline)
+                    .foregroundColor(daysLeft <= 3 ? .red : .secondary)
+            }
+
 
             if !package.isActivated {
                 Button("Aktivera paket") {

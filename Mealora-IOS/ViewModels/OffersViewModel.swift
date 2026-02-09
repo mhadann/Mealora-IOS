@@ -19,7 +19,12 @@ final class OffersViewModel {
             meals: 10,
             price: 750,
             durationDays: 30,
-            qrCode: "bella-italia-qr"
+            qrCode: "bella-italia-qr",
+            discountText: "Du sparar 30%",
+            subtitle: "Den här restaurangen är bra",
+            imageName:"bella_italia_cover",
+            Logimage:  "bella_italia_logo"
+            
         ),
         Offer(
             id: UUID(),
@@ -28,7 +33,11 @@ final class OffersViewModel {
             meals: 10,
             price: 750,
             durationDays: 30,
-            qrCode: "Test-restaurang-qr"
+            qrCode: "Test-restaurang-qr",
+            discountText: "Du sparar 30%",
+            subtitle: "Den här restaurangen är bra",
+            imageName:"bella_italia_cover",
+            Logimage:  "bella_italia_logo"
         )
     ]
     
