@@ -2,10 +2,6 @@
 //  QRScannerView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-29.
-//
-
-import Foundation
 
 import SwiftUI
 import AVFoundation
@@ -17,6 +13,8 @@ struct QRScannerView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIViewController {
         let controller = UIViewController()
+        controller.view.backgroundColor = .black
+
         let session = AVCaptureSession()
 
         guard
@@ -39,10 +37,19 @@ struct QRScannerView: UIViewControllerRepresentable {
             metadataOutput.metadataObjectTypes = [.qr]
         }
 
+        // Kamera preview
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.frame = controller.view.layer.bounds
+        previewLayer.frame = controller.view.bounds
         previewLayer.videoGravity = .resizeAspectFill
         controller.view.layer.addSublayer(previewLayer)
+
+        // Overlay
+        let overlay = UIHostingController(rootView: ScannerOverlayView())
+        overlay.view.backgroundColor = .clear
+        overlay.view.frame = controller.view.bounds
+        controller.addChild(overlay)
+        controller.view.addSubview(overlay.view)
+        overlay.didMove(toParent: controller)
 
         session.startRunning()
         context.coordinator.session = session
@@ -80,5 +87,42 @@ struct QRScannerView: UIViewControllerRepresentable {
             onScan(value)
             dismiss()
         }
+    }
+}
+
+
+struct ScannerOverlayView: View {
+
+    private let frameSize: CGFloat = 260
+
+    var body: some View {
+        ZStack {
+            // Mörk bakgrund med hål
+            Color.black.opacity(0.55)
+                .mask(
+                    Rectangle()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .frame(width: frameSize, height: frameSize)
+                                .blendMode(.destinationOut)
+                        )
+                )
+                .ignoresSafeArea()
+
+            // Scan‑ram
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.white, lineWidth: 3)
+                .frame(width: frameSize, height: frameSize)
+
+            VStack {
+                Spacer()
+
+                Text("Placera QR‑koden inom ramen")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 40)
+            }
+        }
+        .compositingGroup()
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var packagesVM = MyPackagesViewModel()
     private let offersVM = OffersViewModel()
+    
 
     var body: some View {
         TabView {
