@@ -5,6 +5,11 @@
 //  Created by Mahamed Adan on 2026-01-20.
 //
 
+//
+//  OffersListView.swift
+//  Mealora-IOS
+//
+
 import SwiftUI
 
 let foodoraPink = Color(red: 0.93, green: 0.00, blue: 0.39)
@@ -20,7 +25,7 @@ struct OffersListView: View {
         NavigationStack {
             VStack(spacing: 12) {
 
-                // Sökfält
+                // MARK: - Search
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.secondary)
@@ -33,7 +38,7 @@ struct OffersListView: View {
                 .cornerRadius(14)
                 .padding(.horizontal)
 
-                // Restaurang-filter (chips)
+                // MARK: - Filter chips
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         filterChip(
@@ -55,9 +60,9 @@ struct OffersListView: View {
                     .padding(.horizontal)
                 }
 
-                // Erbjudanden
+                // MARK: - Offers
                 ScrollView {
-                    VStack(spacing: 16) {
+                    VStack(spacing: 24) { // 🔹 MER MELLANSLAG
                         ForEach(filteredOffers) { offer in
                             NavigationLink {
                                 OfferDetailView(
@@ -69,6 +74,8 @@ struct OffersListView: View {
                             }
                             .buttonStyle(.plain)
                         }
+
+                        Spacer(minLength: 30)
                     }
                     .padding()
                 }
@@ -81,7 +88,7 @@ struct OffersListView: View {
         }
     }
 
-    // MARK: - Filtrering
+    // MARK: - Filtering
 
     private var restaurants: [String] {
         Array(Set(offers.map { $0.restaurantName })).sorted()
@@ -122,14 +129,13 @@ struct OffersListView: View {
     private func offerCard(_ offer: Offer) -> some View {
         VStack(alignment: .leading, spacing: 12) {
 
-            // 🔹 Bild med overlay (restaurang + logo)
+            // MARK: - Image with overlay
             ZStack(alignment: .bottomLeading) {
                 Image(offer.imageName)
                     .resizable()
                     .scaledToFill()
                     .frame(height: 180)
                     .clipped()
-                    .cornerRadius(16)
 
                 HStack(spacing: 10) {
                     Image(offer.Logimage)
@@ -151,6 +157,7 @@ struct OffersListView: View {
                     )
                 )
             }
+            .cornerRadius(16)
 
             // Paket-titel
             Text(offer.title)
@@ -161,7 +168,7 @@ struct OffersListView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
-            //Pris + rabatt
+            // Pris + rabatt
             HStack {
                 Text("\(offer.price) kr")
                     .font(.headline)
@@ -177,6 +184,9 @@ struct OffersListView: View {
                     .cornerRadius(12)
             }
         }
+        .padding(14)
+        .background(Color(.systemGray6)) // 🔹 LJUSGRÅ CONTAINER
+        .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 }
 
