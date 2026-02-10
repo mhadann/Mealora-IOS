@@ -2,7 +2,7 @@
 //  QRScannerOverlayView.swift .swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-02-10.
+//  Created by Mahamed Adan on 2026-01-20.
 //
 
 import SwiftUI

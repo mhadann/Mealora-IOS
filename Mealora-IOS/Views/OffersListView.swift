@@ -2,7 +2,7 @@
 //  OffersListView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-29.
+//  Created by Mahamed Adan on 2026-01-20.
 //
 
 import SwiftUI
@@ -152,16 +152,16 @@ struct OffersListView: View {
                 )
             }
 
-            // 🔹 Paket-titel
+            // Paket-titel
             Text(offer.title)
                 .font(.headline)
 
-            // 🔹 Subtitle
+            // Subtitle
             Text(offer.subtitle)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
-            // 🔹 Pris + rabatt
+            //Pris + rabatt
             HStack {
                 Text("\(offer.price) kr")
                     .font(.headline)

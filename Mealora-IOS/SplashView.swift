@@ -2,7 +2,7 @@
 //  SplashView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-31.
+//  Created by Mahamed Adan on 2026-01-22.
 //
 
 import SwiftUI

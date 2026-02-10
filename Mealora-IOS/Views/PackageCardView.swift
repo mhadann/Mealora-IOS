@@ -1,22 +1,9 @@
-//
-//  PackageCardView.swift
-//  Mealora-IOS
-//
-//  Created by Mahamed Adan on 2026-01-29.
-//
 
 //
 //  PackageCardView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-29.
-//
-
-//
-//  PackageCardView.swift
-//  Mealora-IOS
-//
-//  Created by Mahamed Adan on 2026-01-29.
+//  Created by Mahamed Adan on 2026-01-20.
 //
 
 import SwiftUI
@@ -55,7 +42,6 @@ struct PackageCardView: View {
 
                 Spacer()
 
-                // 🔁 Samma plats & stil – olika text beroende på status
                 Text(
                     package.isActivated
                     ? "Ta med kvitot"
@@ -70,7 +56,7 @@ struct PackageCardView: View {
             }
 
             // MARK: - Description
-            Text("Giltig i 30 dagar från och med när du hämtar din första måltid")
+            Text("Giltig i 30 dagar från och med när du aktiverar den")
                 .font(.footnote)
                 .foregroundColor(.secondary)
 
@@ -78,13 +64,13 @@ struct PackageCardView: View {
             if package.isActivated, let daysLeft = package.daysLeft {
                 Text("\(daysLeft) dagar kvar")
                     .font(.subheadline.bold())
-                    .foregroundColor(daysLeft <= 3 ? .red : .secondary)
+                    .foregroundColor(daysLeft <= 3 ? .red : .black)
             }
 
             if package.isActivated {
                 Text("\(package.mealsLeft) måltider kvar")
                     .font(.subheadline.bold())
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.black)
             }
 
             // MARK: - Actions

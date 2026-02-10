@@ -2,7 +2,7 @@
 //  OfferDetailView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-29.
+//  Created by Mahamed Adan on 2026-01-20.
 //
 
 import SwiftUI
@@ -90,7 +90,7 @@ struct OfferDetailView: View {
             }
             .padding()
         }
-        .navigationTitle("Detaljer")
+        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $goToMyPackages) {
             MyPackagesView()

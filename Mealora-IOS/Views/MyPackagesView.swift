@@ -2,7 +2,7 @@
 //  MyPackagesView.swift
 //  Mealora-IOS
 //
-//  Created by Mahamed Adan on 2026-01-29.
+//  Created by Mahamed Adan on 2026-01-20.
 //
 import SwiftUI
 
@@ -21,10 +21,16 @@ struct MyPackagesView: View {
                         index: index,
                         packagesVM: packagesVM
                     )
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.white)
                 }
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .background(Color.white)          
             .navigationTitle("Mina paket")
         }
+        .background(Color.white)
     }
 }
 
