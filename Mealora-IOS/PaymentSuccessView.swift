@@ -6,32 +6,41 @@
 //
 
 import SwiftUI
+import AudioToolbox
+
 
 struct PaymentSuccessView: View {
     let text: String
+    let isSuccess: Bool
     let onDone: () -> Void
 
     var body: some View {
         VStack(spacing: 24) {
-            Spacer()
-
-            Image(systemName: "checkmark.circle.fill")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .foregroundColor(.green)
+            Image(systemName: isSuccess
+                  ? "checkmark.circle.fill"
+                  : "xmark.octagon.fill")
+                .font(.system(size: 90))
+                .foregroundColor(isSuccess ? .green : .red)
 
             Text(text)
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Spacer()
+                .font(.title.bold())
 
             Button("Klar") {
                 onDone()
             }
             .buttonStyle(.borderedProminent)
-            .padding(.bottom, 40)
         }
         .padding()
+        .onAppear {
+            playSound()
+        }
+    }
+
+    private func playSound() {
+        if isSuccess {
+            AudioServicesPlaySystemSound(1013) // godkänt‑pling
+        } else {
+            AudioServicesPlaySystemSound(1006) // error‑ljud
+        }
     }
 }

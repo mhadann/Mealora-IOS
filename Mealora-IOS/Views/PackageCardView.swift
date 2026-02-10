@@ -17,6 +17,7 @@ struct PackageCardView: View {
     @ObservedObject var packagesVM: MyPackagesViewModel
     @State private var showQRScanner = false
     @State private var qrAction: QRAction?
+
     
     enum QRAction {
         case activate
@@ -25,6 +26,10 @@ struct PackageCardView: View {
 
     @State private var showSuccessView = false
     @State private var successText = ""
+    
+    @State private var showResultView = false
+    @State private var isSuccess = false
+
 
 
     var body: some View {
@@ -72,11 +77,13 @@ struct PackageCardView: View {
             .fullScreenCover(isPresented: $showSuccessView) {
                 PaymentSuccessView(
                     text: successText,
+                    isSuccess: isSuccess,
                     onDone: {
                         showSuccessView = false
                     }
                 )
             }
+
 
             .buttonStyle(.bordered)
         }
@@ -88,26 +95,29 @@ struct PackageCardView: View {
 
         switch action {
         case .activate:
-            packagesVM.activatePackage(
+            isSuccess = packagesVM.activatePackage(
                 at: index,
                 scannedCode: scannedCode
             )
-            successText = "Paketet är aktiverat 🎉"
+            successText = isSuccess
+            ? "Paketet är aktiverat"
+            : "Fel QR‑kod"
 
         case .useMeal:
-            packagesVM.useMeal(
+            isSuccess = packagesVM.useMeal(
                 at: index,
                 scannedCode: scannedCode
             )
-            successText = "En måltid har använts 🍽️"
-            //ljudet som spelas upp vid godkänt
-            AudioServicesPlaySystemSound(1060)
+            successText = isSuccess
+            ? "En måltid har använts"
+            : "Fel QR‑kod"
         }
 
         showQRScanner = false
-        qrAction = nil
         showSuccessView = true
+        qrAction = nil
     }
+
 
 
 }

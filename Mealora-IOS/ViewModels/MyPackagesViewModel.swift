@@ -34,26 +34,23 @@ final class MyPackagesViewModel: ObservableObject {
     
     // funktion för att aktivera paket
     
-    func activatePackage(at index: Int, scannedCode: String) {
-        guard packages.indices.contains(index) else { return }
-
-        //  om redan aktiverat
-        guard packages[index].isActivated == false else { return }
+    func activatePackage(at index: Int, scannedCode: String) -> Bool {
+        guard packages.indices.contains(index) else { return false }
 
         let expectedQR = packages[index].offer.qrCode
-
-        guard scannedCode == expectedQR else { return }
+        guard scannedCode == expectedQR else { return false }
 
         packages[index].isActivated = true
         packages[index].activationDate = Date()
         StorageManager.shared.save(packages)
+        return true
     }
+
     
     func useMeal(at index: Int, scannedCode: String) -> Bool {
         guard packages.indices.contains(index) else { return false }
 
         let package = packages[index]
-
         guard package.isActivated else { return false }
         guard package.mealsLeft > 0 else { return false }
 
@@ -64,6 +61,7 @@ final class MyPackagesViewModel: ObservableObject {
         StorageManager.shared.save(packages)
         return true
     }
+
     
 
 
