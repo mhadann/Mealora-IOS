@@ -17,7 +17,7 @@ struct OfferDetailView: View {
         ScrollView {
             VStack(spacing: 24) {
 
-                // 🔹 Bild med overlay (restaurang + logo)
+                // Bild med overlay (restaurang + logo)
                 ZStack(alignment: .bottomLeading) {
                     Image(offer.imageName)
                         .resizable()
@@ -47,12 +47,12 @@ struct OfferDetailView: View {
                     )
                 }
 
-                // 🔹 Paket‑titel (huvudtitel)
+                // Paket‑titel (huvudtitel)
                 Text(offer.title)
                     .font(.title.bold())
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                // 🔹 Rabatt‑badge
+                // Rabatt‑badge
                 Text(offer.discountText)
                     .font(.subheadline.bold())
                     .padding(.horizontal, 12)
@@ -62,7 +62,7 @@ struct OfferDetailView: View {
                     .cornerRadius(20)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                // 🔹 Info‑kort
+                // Info‑kort
                 VStack(spacing: 12) {
                     infoRow(title: "Måltider", value: "\(offer.meals) st")
                     infoRow(title: "Giltighet", value: "\(offer.durationDays) dagar")
@@ -72,7 +72,7 @@ struct OfferDetailView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(16)
 
-                // 🔹 Köp‑knapp
+                // Köp‑knapp
                 Button {
                     packagesVM.buy(offer: offer)
                     goToMyPackages = true
@@ -98,7 +98,7 @@ struct OfferDetailView: View {
         }
     }
 
-    // 🔹 Hjälp‑UI
+    // Hjälp‑UI
     private func infoRow(title: String, value: String) -> some View {
         HStack {
             Text(title)

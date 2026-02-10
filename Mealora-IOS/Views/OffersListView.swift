@@ -13,29 +13,112 @@ struct OffersListView: View {
     let offers: [Offer]
     @ObservedObject var packagesVM: MyPackagesViewModel
 
+    @State private var searchText = ""
+    @State private var selectedRestaurant: String? = nil
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(offers) { offer in
-                        NavigationLink {
-                            OfferDetailView(
-                                offer: offer,
-                                packagesVM: packagesVM
-                            )
-                        } label: {
-                            offerCard(offer)
-                        }
-                        .buttonStyle(.plain)
-                    }
+            VStack(spacing: 12) {
+
+                // Sökfält
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.secondary)
+
+                    TextField("Sök erbjudande", text: $searchText)
+                        .textInputAutocapitalization(.never)
                 }
                 .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(14)
+                .padding(.horizontal)
+
+                // Restaurang-filter (chips)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        filterChip(
+                            title: "Alla",
+                            isSelected: selectedRestaurant == nil
+                        ) {
+                            selectedRestaurant = nil
+                        }
+
+                        ForEach(restaurants, id: \.self) { restaurant in
+                            filterChip(
+                                title: restaurant,
+                                isSelected: selectedRestaurant == restaurant
+                            ) {
+                                selectedRestaurant = restaurant
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+
+                // Erbjudanden
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ForEach(filteredOffers) { offer in
+                            NavigationLink {
+                                OfferDetailView(
+                                    offer: offer,
+                                    packagesVM: packagesVM
+                                )
+                            } label: {
+                                offerCard(offer)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding()
+                }
+                .scrollDismissesKeyboard(.immediately)
+            }
+            .onTapGesture {
+                hideKeyboard()
             }
             .navigationTitle("Mealora")
         }
     }
 
-    // 🔹 Kort för erbjudande
+    // MARK: - Filtrering
+
+    private var restaurants: [String] {
+        Array(Set(offers.map { $0.restaurantName })).sorted()
+    }
+
+    private var filteredOffers: [Offer] {
+        offers.filter { offer in
+            let matchesSearch =
+                searchText.isEmpty ||
+                offer.title.localizedCaseInsensitiveContains(searchText)
+
+            let matchesRestaurant =
+                selectedRestaurant == nil ||
+                offer.restaurantName == selectedRestaurant
+
+            return matchesSearch && matchesRestaurant
+        }
+    }
+
+    // MARK: - UI Components
+
+    private func filterChip(
+        title: String,
+        isSelected: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.subheadline.bold())
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(isSelected ? foodoraPink : Color(.systemGray6))
+                .foregroundColor(isSelected ? .white : .primary)
+                .cornerRadius(20)
+        }
+    }
+
     private func offerCard(_ offer: Offer) -> some View {
         VStack(alignment: .leading, spacing: 12) {
 
@@ -69,7 +152,7 @@ struct OffersListView: View {
                 )
             }
 
-            // 🔹 Paket‑titel
+            // 🔹 Paket-titel
             Text(offer.title)
                 .font(.headline)
 
@@ -94,5 +177,18 @@ struct OffersListView: View {
                     .cornerRadius(12)
             }
         }
+    }
+}
+
+// MARK: - Keyboard helper
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
 }
