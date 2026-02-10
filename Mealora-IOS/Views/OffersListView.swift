@@ -15,80 +15,84 @@ struct OffersListView: View {
 
     var body: some View {
         NavigationStack {
-            List(offers) { offer in
-                NavigationLink {
-                    OfferDetailView(
-                        offer: offer,
-                        packagesVM: packagesVM
-                    )
-                } label: {
-
-                    VStack(alignment: .leading, spacing: 0) {
-
-                        // 🖼️ HERO-BILD
-                        ZStack(alignment: .topLeading) {
-                            Image(offer.imageName)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 160)
-                                .clipped()
-
-                            // 🏷️ Rabatt-badge
-                            Text(offer.discountText)
-                                .font(.caption.bold())
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(foodoraPink)
-                                .clipShape(Capsule())
-                                .padding(12)
-
-                            // 🍽️ LOGO
-                            VStack {
-                                Spacer()
-                                HStack {
-                                    Image(offer.Logimage)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 44, height: 44)
-                                        .background(Color.white)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .shadow(radius: 4)
-                                        .padding(12)
-
-                                    Spacer()
-                                }
-                            }
-
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(offers) { offer in
+                        NavigationLink {
+                            OfferDetailView(
+                                offer: offer,
+                                packagesVM: packagesVM
+                            )
+                        } label: {
+                            offerCard(offer)
                         }
-                        
-
-                        // 📝 TEXT-INNEHÅLL
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(offer.restaurantName)
-                                .font(.headline)
-
-                            Text(offer.subtitle)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-
-                            Text("\(offer.price) kr")
-                                .font(.headline)
-                                .foregroundColor(foodoraPink)
-                        }
-                        .padding()
+                        .buttonStyle(.plain)
                     }
-                    .background(Color.white)
-                    .cornerRadius(20)
-                    .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
                 }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                
+                .padding()
             }
-            .listStyle(.plain)
             .navigationTitle("Mealora")
         }
-        
+    }
+
+    // 🔹 Kort för erbjudande
+    private func offerCard(_ offer: Offer) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+
+            // 🔹 Bild med overlay (restaurang + logo)
+            ZStack(alignment: .bottomLeading) {
+                Image(offer.imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 180)
+                    .clipped()
+                    .cornerRadius(16)
+
+                HStack(spacing: 10) {
+                    Image(offer.Logimage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 36, height: 36)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                    Text(offer.restaurantName)
+                        .font(.subheadline.bold())
+                        .foregroundColor(.white)
+                }
+                .padding(10)
+                .background(
+                    LinearGradient(
+                        colors: [.black.opacity(0.6), .clear],
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                )
+            }
+
+            // 🔹 Paket‑titel
+            Text(offer.title)
+                .font(.headline)
+
+            // 🔹 Subtitle
+            Text(offer.subtitle)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+
+            // 🔹 Pris + rabatt
+            HStack {
+                Text("\(offer.price) kr")
+                    .font(.headline)
+
+                Spacer()
+
+                Text(offer.discountText)
+                    .font(.caption.bold())
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(foodoraPink.opacity(0.15))
+                    .foregroundColor(foodoraPink)
+                    .cornerRadius(12)
+            }
+        }
     }
 }
