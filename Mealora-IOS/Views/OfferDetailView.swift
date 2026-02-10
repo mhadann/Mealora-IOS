@@ -12,6 +12,8 @@ import SwiftUI
 struct OfferDetailView: View {
     let offer: Offer
     @ObservedObject var packagesVM: MyPackagesViewModel
+    
+    @State private var goToMyPackages = false
 
     var body: some View {
         VStack(spacing: 16) {
@@ -25,9 +27,12 @@ struct OfferDetailView: View {
             Text("\(offer.meals) måltider")
             Text("\(offer.durationDays) dagar giltighet")
             Text("Pris: \(offer.price) kr")
+            
+            
 
             Button {
                 packagesVM.buy(offer: offer)
+                goToMyPackages = true
             } label: {
                 Text("Köp")
                     .frame(maxWidth: .infinity)
@@ -36,6 +41,11 @@ struct OfferDetailView: View {
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
+            .navigationDestination(isPresented: $goToMyPackages) {
+                MyPackagesView()
+                    .environmentObject(packagesVM)
+            }
+
 
             Spacer()
         }
