@@ -34,7 +34,7 @@ struct SplashView: View {
                             radius: 20
                         )
 
-                    Text("eat more, save more ")
+                    Text("EAT MORE, SAVE MORE ")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .opacity(opacity)
@@ -52,13 +52,13 @@ struct SplashView: View {
     private func startAnimation() {
         player.play()
 
-        // 1️⃣ Fade + scale in
+        //  Fade + scale in
         withAnimation(.easeOut(duration: 0.6)) {
             opacity = 1
             scale = 1.0
         }
 
-        // 2️⃣ Glow pulse
+        //  Glow pulse
         withAnimation(
             .easeInOut(duration: 0.8)
             .repeatCount(2, autoreverses: true)
@@ -66,12 +66,12 @@ struct SplashView: View {
             glow = 0.6
         }
 
-        // 3️⃣ Subtitle slide
+        //  Subtitle slide
         withAnimation(.spring(response: 0.7, dampingFraction: 0.8)) {
             moveUp = 0
         }
 
-        // 4️⃣ Exit to app
+        //  Exit to app
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
             withAnimation(.easeInOut(duration: 0.4)) {
                 opacity = 0

@@ -120,7 +120,7 @@ struct ScannerOverlayView: View {
                 Text("Placera QR‑koden inom ramen")
                     .font(.headline)
                     .foregroundColor(.white)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 100)
             }
         }
         .compositingGroup()
